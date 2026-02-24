@@ -18,3 +18,4 @@ path="src/picker.rs"
 
 [profile.release]
 lto = true
+panic = "abort"

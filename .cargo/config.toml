@@ -1,0 +1,6 @@
+# 在 Mac 上交叉编译 32 位 Windows DLL 时使用
+[target.i686-pc-windows-gnu]
+linker = "i686-w64-mingw32-gcc"
+ar = "i686-w64-mingw32-ar"
+# 显式在末尾链接 libgcc_eh/libgcc，解决 _Unwind_Resume 未定义（MinGW 异常展开）
+rustflags = ["-C", "link-arg=-lgcc_eh", "-C", "link-arg=-lgcc"]

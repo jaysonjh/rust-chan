@@ -2,16 +2,24 @@
 
 # 使用方法
 
+**Windows 本机编译（32 位）：**
 ```shell
-rustup target add  i686-pc-windows-msvc
+rustup target add i686-pc-windows-msvc
 cargo build --release --target i686-pc-windows-msvc
 copy .\target\i686-pc-windows-msvc\release\zen_stock.dll C:\tdx\T0002\dlls
 ```
 
+**或通过 GitHub Actions 构建（Mac/Linux 无需本机 Windows）：**
+推送到 main/master 或仓库 Actions 页手动运行 “Build 32-bit DLL (TDX)”，完成后在 Artifacts 中下载 `zen_stock-dll` 即可得到 `zen_stock.dll`。
+
+**若出现「绑定失败 / 此DLL装载失败」：** 当前 CI 已静态链接运行库，若仍失败，请在运行通达信的 Windows 上安装 [Microsoft Visual C++ 可再发行组件 (x86)](https://aka.ms/vs/17/release/vc_redist.x86.exe)，并将 `zen_stock.dll` 放在通达信安装目录下的 `T0002\dlls`（或你当前使用的配置目录的 `dlls` 子目录）。
+
 ## 通达信公式
+
 绑定到第二个dll，并编辑公式如下:
 
 1、 缠论端点和买卖点公式，命名为 ZEN2
+
 ```
 BI_QK:=0; {是否缺口突破成笔, 1-是，0-否}
 CIGAO:=1;{是否次高成笔}
@@ -89,6 +97,7 @@ BIEXT:BIZG_ORIG<0,NODRAW;
 ```
 
 2、专家系统公式
+
 ```
 {多头买入(买开)} ENTERLONG: ZEN2.一买;
 {多头卖出(卖平)} EXITLONG: ZEN2.一卖;
@@ -97,6 +106,7 @@ BIEXT:BIZG_ORIG<0,NODRAW;
 ```
 
 3、主图绘图公式
+
 ```
 FRAC:=ZEN2.FRAC,NODRAW;
 DUAN1:=ZEN2.DUAN;
@@ -131,7 +141,9 @@ DRAWICON(ZEN2.笔背离, IF(FRAC=-1,H, L), 31);
 DRAWICON(ZEN2.段背离, IF(DUAN1=-1,H, L), 32);
 DRAWICON(ZEN2.背驰, IF(FRAC=-1,H,L), 8);
 ```
+
 4、采用强弱顶底分型作为笔和线段主图指标
+
 ```
 MERGE:=0;
 LEAP:=0;
@@ -160,7 +172,9 @@ DRAWLINE(FS==1,IF(POLE_VALUE<>DRAWNULL,POLE_VALUE,H),FB==1,IF(POLE_VALUE<>DRAWNU
 DRAWICON(FXX==2, L, 8);
 DRAWICON(FXX==-2, H, 7);
 ```
+
 5、选股公式，周期内最近7天有2买
+
 ```
 N=7;
 B1B:=BARSLAST(ZEN2.SIG=1);
