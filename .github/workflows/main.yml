@@ -1,4 +1,5 @@
 name: Build 32-bit DLL (TDX)
+
 on:
   push:
     branches: [main, master]
@@ -16,6 +17,8 @@ jobs:
           targets: i686-pc-windows-msvc
 
       - name: Build release DLL
+        env:
+          RUSTFLAGS: -C target-feature=+crt-static
         run: cargo build --release --target i686-pc-windows-msvc
 
       - name: Upload zen_stock.dll
