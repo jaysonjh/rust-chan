@@ -1,0 +1,25 @@
+name: Build 32-bit DLL (TDX)
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust (i686-pc-windows-msvc)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: i686-pc-windows-msvc
+
+      - name: Build release DLL
+        run: cargo build --release --target i686-pc-windows-msvc
+
+      - name: Upload zen_stock.dll
+        uses: actions/upload-artifact@v4
+        with:
+          name: zen_stock-dll
+          path: target/i686-pc-windows-msvc/release/zen_stock.dll
