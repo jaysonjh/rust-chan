@@ -9,8 +9,10 @@ cargo build --release --target i686-pc-windows-msvc
 copy .\target\i686-pc-windows-msvc\release\zen_stock.dll C:\tdx\T0002\dlls
 ```
 
-**或通过 GitHub Actions 构建（Mac/Linux 无需本机 Windows）：**  
+**或通过 GitHub Actions 构建（Mac/Linux 无需本机 Windows）：**
 推送到 main/master 或仓库 Actions 页手动运行 “Build 32-bit DLL (TDX)”，完成后在 Artifacts 中下载 `zen_stock-dll` 即可得到 `zen_stock.dll`。
+
+**若出现「绑定失败 / 此DLL装载失败」：** 当前 CI 已静态链接运行库，若仍失败，请在运行通达信的 Windows 上安装 [Microsoft Visual C++ 可再发行组件 (x86)](https://aka.ms/vs/17/release/vc_redist.x86.exe)，并将 `zen_stock.dll` 放在通达信安装目录下的 `T0002\dlls`（或你当前使用的配置目录的 `dlls` 子目录）。
 
 ## 通达信公式
 
